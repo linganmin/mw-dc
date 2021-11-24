@@ -1,0 +1,22 @@
+version: '3'
+
+networks:
+  default:
+    external:
+      name: tools
+
+services:
+  etcd:
+    image: 'bitnami/etcd:latest'
+    environment:
+      - ALLOW_NONE_AUTHENTICATION=yes
+      - ETCD_ADVERTISE_CLIENT_URLS=http://etcd:2379,http://127.0.0.1:2379
+    restart: 'always'
+    ports:
+      - 2379:2379
+      - 2380:2380
+  etcd-ui:
+    image: 'evildecay/etcdkeeper'
+    restart: 'always'
+    ports:
+      - 2381:8080

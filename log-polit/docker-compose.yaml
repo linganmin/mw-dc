@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  logpilot:
+    image: registry.cn-hangzhou.aliyuncs.com/acs/log-pilot:0.9.7-fluentd
+    restart: always
+    privileged: true
+    command:
+      --privileged
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /:/host
+    environment:
+      FLUENTD_OUTPUT: elasticsearch #按照您的需要替换
+      ELASTICSEARCH_HOST: elk #按照您的需要替换
+      ELASTICSEARCH_PORT: 9200
+
+
+networks:
+  default:
+    external:
+      name: tools

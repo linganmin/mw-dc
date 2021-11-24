@@ -1,0 +1,17 @@
+version: "3"
+
+networks:
+  default:
+    external:
+      name: tools
+
+services:
+  consul:
+    image: consul:latest
+    restart: always
+    container_name: consul
+    command: agent -server -bootstrap -ui -client 0.0.0.0
+    ports:
+      - 8500:8500
+    volumes:
+      - ./data:/data
