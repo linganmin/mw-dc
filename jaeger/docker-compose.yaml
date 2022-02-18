@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    restart: always
+    ports:
+      - "14268:14268"
+      - "16686:16686"
+
+
+networks:
+  default:
+    external:
+      name: tools
