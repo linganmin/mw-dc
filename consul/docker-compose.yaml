@@ -1,4 +1,4 @@
-version: "3"
+version: '3'
 
 networks:
   default:
@@ -6,12 +6,33 @@ networks:
       name: tools
 
 services:
-  consul:
+  consul1:
     image: consul:latest
     restart: always
-    container_name: consul
-    command: agent -server -bootstrap -ui -client 0.0.0.0
+    container_name: consul-node1
+    command: agent -server -bootstrap -client 0.0.0.0 # -bootstrap 标识该服务是否处于”引导“模式，每个数据中心最多只能运行一台有该配置的服务，有该标识的服务可以自我选举为 leader
+  consul2:
+    image: consul:latest
+    restart: always
+    container_name: consul-node2
+    command: agent -server -client 0.0.0.0 -retry-join consul-node1
+    depends_on:
+      - consul1
+  consul3:
+    image: consul:latest
+    restart: always
+    container_name: consul-node3
+    command: agent -server  -client 0.0.0.0 -retry-join consul-node1
+    depends_on:
+      - consul1
+
+  consul4: # client
+    image: consul:latest
+    restart: always
+    container_name: consul-node4
+    command: agent -ui -client 0.0.0.0 -retry-join consul-node1
     ports:
       - 8500:8500
-    volumes:
-      - ./data:/data
+    depends_on:
+      - consul2
+      - consul3
