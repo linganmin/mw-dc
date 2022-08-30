@@ -2,6 +2,7 @@
 port ${PORT}
 # 密码
 requirepass 6c1c613164162f91d4393c2cccfe33ff
+masterauth 6c1c613164162f91d4393c2cccfe33ff
 # 关闭保护模式
 protected-mode no
 # 开启集群
